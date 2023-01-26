@@ -23,11 +23,24 @@ func BootServer() error {
 		log.Fatal(fmt.Errorf("Error connecting to DB: %w", err))
 	}
 
-
-	
 	//create a new app controller
-	ac := &router.AppController{
+	ac := new(router.AppController)
+
+	//create a new server controller
+	ac.ServerController, err = ac.NewServerController(db)
+
+	//create a new user controller
+	ac.UserController, err = ac.NewUserController(db)
+	if err != nil {
+		return err
 	}
+
+	//create new url controllers
+	ac.URLController, err = ac.NewURLController(db)
+	if err != nil {
+		return err
+	}
+
 
 	router := router.InitRouter(ac)
 
