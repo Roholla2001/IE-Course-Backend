@@ -3,7 +3,7 @@ package user
 import "golang.org/x/crypto/bcrypt"
 
 type User struct {
-	ID       int64
+	ID       int64 	`gorm:"primaryKey"`
 	Username string
 	Password string
 }
