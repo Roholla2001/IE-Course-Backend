@@ -18,7 +18,7 @@ func NewUserService(db *gorm.DB) (*UserServer, error) {
 	return &UserServer{db}, nil
 }
 
-func (us *UserServer) CreateUser(ctx context.Context, user *usermodel.User) error {
+func (us *UserServer) CreateUser(ctx context.Context, user *usermodel.UserModel) error {
 	if err := us.db.Create(user).Error; err != nil {
 		return err
 	}
@@ -26,11 +26,11 @@ func (us *UserServer) CreateUser(ctx context.Context, user *usermodel.User) erro
 	return nil
 }
 
-func (us *UserServer) LoginCheck(ctx context.Context, user *usermodel.User) (token string, err error) {
-	var u usermodel.User
+func (us *UserServer) LoginCheck(ctx context.Context, user *usermodel.UserModel) (token string, err error) {
+	var u usermodel.UserModel
 
 	//take user with given credintials
-	if err = us.db.Model(&usermodel.User{}).Where("username = ?", user.Username).Take(&u).Error; err != nil {
+	if err = us.db.Model(&usermodel.UserModel{}).Where("username = ?", user.Username).Take(&u).Error; err != nil {
 		return
 	}
 
@@ -45,8 +45,8 @@ func (us *UserServer) LoginCheck(ctx context.Context, user *usermodel.User) (tok
 	return "", nil
 }
 
-func GetUserByID(uid int64, db *gorm.DB) (*usermodel.User, error) {
-	var u *usermodel.User
+func GetUserByID(uid int64, db *gorm.DB) (*usermodel.UserModel, error) {
+	var u *usermodel.UserModel
 
 	if err := db.First(u, uid).Error; err != nil {
 		return u, fmt.Errorf("user not found")

@@ -1,7 +1,7 @@
 
-CREATE TABLE user (
+CREATE TABLE userModel (
     id BIGSERIAL,
-    username VARCHAR(200),
+    username VARCHAR(200) UNIQUE,
     password VARCHAR(32)
 );
 

@@ -15,7 +15,7 @@ type UserController struct {
 }
 
 func NewUserController(db *gorm.DB) (*UserController, error) {
-	userService,err := userservice.NewUserService(db)
+	userService, err := userservice.NewUserService(db)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func (uc *UserController) Register(ctx *gin.Context) {
 		return
 	}
 
-	u := &usermodel.User{}
+	u := &usermodel.UserModel{}
 
 	u.Username = input.Username
 	u.Password = input.Password
@@ -52,7 +52,7 @@ func (uc *UserController) Login(ctx *gin.Context) {
 		return
 	}
 
-	u := &usermodel.User{}
+	u := &usermodel.UserModel{}
 
 	u.Username = input.Username
 	u.Password = input.Password

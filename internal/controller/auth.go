@@ -22,7 +22,7 @@ func JwtAuthMiddleware() gin.HandlerFunc {
 	}
 }
 
-func CurrentUser(c *gin.Context) (*usermodel.User, error) {
+func CurrentUser(c *gin.Context) (*usermodel.UserModel, error) {
 
 	user_id, err := token.ExtractTokenID(c)
 
