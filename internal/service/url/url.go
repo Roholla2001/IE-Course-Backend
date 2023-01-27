@@ -18,14 +18,14 @@ func NewURLService(db *gorm.DB) (*URLServer, error) {
 	return &URLServer{db}, nil
 }
 
-func (us *URLServer) LogRequest(ctx context.Context, currUser *usermodel.User) error {
+func (us *URLServer) LogRequest(ctx context.Context, id int64, currUser *usermodel.User) error {
 	// var URLcount int64
 	// if err:= us.db.Model(&urlmodel.URL{}).Select("COUNT(*)").Where("user_id = ?", currUser).Take(&URLcount).Error ;err != nil {
 	// 	return err
 	// }
 	var url *urlmodel.URL
 
-	if err := us.db.Model(&urlmodel.URL{}).Take(url).Error; err != nil {
+	if err := us.db.Model(&urlmodel.URL{}).Take(url, id).Error; err != nil {
 		return err
 	}
 
@@ -46,11 +46,11 @@ func (us *URLServer) LogRequest(ctx context.Context, currUser *usermodel.User) e
 	return nil
 }
 
-func (us *URLServer) GetStats(ctx context.Context, currUser *usermodel.User) (*urlmodel.URLStat, error) {
+func (us *URLServer) GetStats(ctx context.Context, id int64, currUser *usermodel.User) (*urlmodel.URLStat, error) {
 
 	var url *urlmodel.URL
 
-	if err := us.db.Model(&urlmodel.URL{}).Take(url).Error; err != nil {
+	if err := us.db.Model(&urlmodel.URL{}).Take(url, id).Error; err != nil {
 		return nil, err
 	}
 

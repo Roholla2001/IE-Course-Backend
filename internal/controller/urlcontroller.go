@@ -26,18 +26,13 @@ func NewURLController(db *gorm.DB, url *urlmodel.URL) (*URLController, error) {
 func (cc *URLController) Log(ctx *gin.Context) {
 	c := ctx.Request.Context()
 
-	var url *urlmodel.URL
-	if ok := apiutils.ReadFromJSON(ctx, url); !ok {
-		return
-	}
-
 	currUser, err := CurrentUser(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err = cc.URLServer.LogRequest(c, currUser)
+	err = cc.URLServer.LogRequest(c, cc.URLID, currUser)
 	if err != nil {
 		return
 	}
@@ -48,18 +43,13 @@ func (cc *URLController) Log(ctx *gin.Context) {
 func (cc *URLController) GetStats(ctx *gin.Context) {
 	c := ctx.Request.Context()
 
-	var url *urlmodel.URL
-	if ok := apiutils.ReadFromJSON(ctx, url); !ok {
-		return
-	}
-
 	currUser, err := CurrentUser(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	stat ,err := cc.URLServer.GetStats(c, currUser)
+	stat, err := cc.URLServer.GetStats(c, cc.URLID, currUser)
 	if err != nil {
 		return
 	}
