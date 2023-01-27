@@ -13,13 +13,15 @@ type AppController struct {
 }
 
 func (ac *AppController) AddRoutes(parent *gin.RouterGroup) {
-	route := parent.Group("/api")
+	publicRoutes := parent.Group("/")
+	privateRoutes := parent.Group("/api")
+	privateRoutes.Use(JwtAuthMiddleware())
 
-	ac.ServerController.addRoutes(route)
-	ac.UserController.addRoutes(route)
+	ac.UserController.addRoutes(publicRoutes)
+	ac.ServerController.addRoutes(privateRoutes)
 
 	for _, c := range ac.URLController {
-		c.addRoutes(route)
+		c.addRoutes(privateRoutes)
 	}
 }
 

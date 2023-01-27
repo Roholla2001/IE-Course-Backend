@@ -20,7 +20,5 @@ func (sc *ServerController) getURLs() ([]*urlmodel.URL, error) {
 }
 
 func (sc *ServerController) addRoutes(parent *gin.RouterGroup) {
-	sr := parent.Group("/")
-
-	sr.POST("/add-url", sc.AddUrl)
+	parent.POST("/add-url", sc.AddUrl)
 }

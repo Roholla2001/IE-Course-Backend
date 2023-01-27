@@ -27,7 +27,7 @@ func (c *URLController) getRoute() string {
 
 func (c *URLController) addRoutes(parent *gin.RouterGroup) {
 	//url endpoints
-	ep := parent.Group("/link")
+	ep := parent
 
 	url := c.getRoute()
 	ep.Use()

@@ -1,4 +1,4 @@
-package controller
+package apiutils
 
 import (
 	"encoding/json"

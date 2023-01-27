@@ -11,19 +11,19 @@ import (
 )
 
 type dbConfig struct {
-	Host              string
-	Port              uint16
-	Database          string
-	User              string
-	Password          string
-	LogLevel          uint16
+	Host     string
+	Port     uint16
+	Database string
+	User     string
+	Password string
+	LogLevel uint16
 }
 
 var GormLog bool
+var dbSaved *gorm.DB
 
 func NewDBConn() (db *gorm.DB, err error) {
 	fmt.Println("Connecting to Database")
-
 
 	//Get database config from environmental variables
 	cfg := &dbConfig{}
@@ -54,6 +54,7 @@ func NewDBConn() (db *gorm.DB, err error) {
 		return nil, err
 	}
 
+	dbSaved = db
 	return db, nil
 }
 
@@ -113,4 +114,8 @@ func (cfg dbConfig) toConnStr() string {
 		cfg.Host, cfg.Port, cfg.Database, cfg.User, cfg.Password)
 
 	return connString
+}
+
+func GetDBConn() *gorm.DB{
+	return dbSaved
 }
