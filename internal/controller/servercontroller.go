@@ -11,7 +11,8 @@ import (
 )
 
 type ServerController struct {
-	server *server.Server
+	server      *server.Server
+	parentRoute *gin.RouterGroup
 }
 
 func NewServerController(db *gorm.DB) (*ServerController, error) {
@@ -35,12 +36,22 @@ func (sc *ServerController) AddUrl(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	uc, err := NewURLController(sc.server.DB, url)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return 
+	}
+	sc.parentRoute.GET("/"+url.URL, uc.Log)
+	sc.parentRoute.GET("/"+url.URL + "/stats", uc.GetStats)
+
 }
 
 func (sc *ServerController) getURLs() ([]*urlmodel.URL, error) {
-	return nil, nil
+	return sc.server.GetURLs()
 }
 
 func (sc *ServerController) addRoutes(parent *gin.RouterGroup) {
+	sc.parentRoute = parent
 	parent.POST("/add-url", sc.AddUrl)
 }
