@@ -34,6 +34,17 @@ func (s *Server) AddURL(ctx context.Context, url *urlmodel.URLModel) error {
 	return nil
 }
 
+func (s *Server) GetUserURLs(ctx context.Context, uid int64)([]*string, error){
+	urls := make([]*string, 0)
+
+	err := s.DB.Model(&urlmodel.URLModel{}).Where("id = ?", uid).Select("url").Find(&urls).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return urls, nil
+}
+
 func (s *Server) GetURLs() ([]*urlmodel.URLModel, error) {
 	urls := make([]*urlmodel.URLModel, 0)
 

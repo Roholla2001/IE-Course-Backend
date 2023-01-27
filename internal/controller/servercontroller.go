@@ -57,6 +57,24 @@ func (sc *ServerController) AddUrl(ctx *gin.Context) {
 
 }
 
+func (sc *ServerController) GetUserURLs(ctx *gin.Context){
+	c := ctx.Request.Context()
+
+	currUser, err := CurrentUser(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	urls, err := sc.server.GetUserURLs(c, currUser.ID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return 
+	}
+
+	apiutils.WriteToJSON(ctx, urls, err)
+}
+
 func (sc *ServerController) getURLs() ([]*urlmodel.URLModel, error) {
 	return sc.server.GetURLs()
 }
@@ -64,4 +82,5 @@ func (sc *ServerController) getURLs() ([]*urlmodel.URLModel, error) {
 func (sc *ServerController) addRoutes(parent *gin.RouterGroup) {
 	sc.parentRoute = parent
 	parent.POST("/add-url", sc.AddUrl)
+	parent.GET("/get-urls", sc.GetUserURLs)
 }
