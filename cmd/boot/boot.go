@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/Roholla2001/ie-course-backend/internal/controller"
 	"github.com/Roholla2001/ie-course-backend/internal/infra/datastore"
 	"github.com/Roholla2001/ie-course-backend/internal/infra/router"
 	"github.com/joho/godotenv"
@@ -14,20 +15,23 @@ func BootServer() error {
 	fmt.Println("Loading Env...")
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal(fmt.Errorf("Error Loading .env file, %w", err))
+		log.Fatal(fmt.Errorf("error Loading .env file, %w", err))
 	}
 
 	//getting a new connection pool to database
 	db, err := datastore.NewDBConn()
 	if err != nil {
-		log.Fatal(fmt.Errorf("Error connecting to DB: %w", err))
+		log.Fatal(fmt.Errorf("error connecting to DB: %w", err))
 	}
 
 	//create a new app controller
-	ac := new(router.AppController)
+	ac := new(controller.AppController)
 
 	//create a new server controller
 	ac.ServerController, err = ac.NewServerController(db)
+	if err != nil {
+		return err
+	}
 
 	//create a new user controller
 	ac.UserController, err = ac.NewUserController(db)
@@ -40,7 +44,6 @@ func BootServer() error {
 	if err != nil {
 		return err
 	}
-
 
 	router := router.InitRouter(ac)
 
