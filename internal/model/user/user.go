@@ -3,6 +3,7 @@ package user
 import "golang.org/x/crypto/bcrypt"
 
 type User struct {
+	ID       int64
 	Username string
 	Password string
 }
@@ -21,6 +22,6 @@ func (u *User) BeforeSave() error {
 
 }
 
-func VerifyPassword(password,hashedPassword string) error {
+func VerifyPassword(password, hashedPassword string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }

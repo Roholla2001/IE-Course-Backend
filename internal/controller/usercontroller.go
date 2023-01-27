@@ -11,7 +11,7 @@ import (
 )
 
 type UserController struct {
-	UserServer userservice.UserServer
+	UserServer *userservice.UserServer
 }
 
 func NewUserController(db *gorm.DB) (*UserController, error) {
@@ -19,7 +19,7 @@ func NewUserController(db *gorm.DB) (*UserController, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &UserController{UserServer: *userService}, nil
+	return &UserController{UserServer: userService}, nil
 }
 
 func (uc *UserController) Register(ctx *gin.Context) {

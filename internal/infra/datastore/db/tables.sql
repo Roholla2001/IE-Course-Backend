@@ -7,6 +7,8 @@ CREATE TABLE user (
 
 CREATE TABLE url (
     id BIGSERIAL,
-    address VARCHAR(500) UNIQUE NOT NULL,
-    user_id BIGINT REFERENCES users(id)
+    url VARCHAR(500) UNIQUE NOT NULL,
+    user_id BIGINT REFERENCES users(id),
+    success_count BIGINT,
+    fail_count BIGINT
 );

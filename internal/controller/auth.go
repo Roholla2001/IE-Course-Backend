@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Roholla2001/ie-course-backend/internal/infra/datastore"
+	usermodel "github.com/Roholla2001/ie-course-backend/internal/model/user"
 	userservice "github.com/Roholla2001/ie-course-backend/internal/service/user"
 	"github.com/Roholla2001/ie-course-backend/internal/utils/token"
 	"github.com/gin-gonic/gin"
@@ -21,23 +22,15 @@ func JwtAuthMiddleware() gin.HandlerFunc {
 	}
 }
 
-func CurrentUser(c *gin.Context) {
+func CurrentUser(c *gin.Context) (*usermodel.User, error) {
 
 	user_id, err := token.ExtractTokenID(c)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		return nil, err
 	}
 
-	u, err := userservice.GetUserByID(user_id, datastore.GetDBConn())
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"message": "success", "data": u})
+	return userservice.GetUserByID(user_id, datastore.GetDBConn())
 }
 
 type LoginInput struct {
@@ -49,4 +42,3 @@ type RegisterInput struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
-
