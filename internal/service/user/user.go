@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	usermodel "github.com/Roholla2001/ie-course-backend/internal/model/user"
+	auth "github.com/Roholla2001/ie-course-backend/internal/utils/token"
 	"golang.org/x/crypto/bcrypt"
 
 	"gorm.io/gorm"
@@ -30,7 +31,7 @@ func (us *UserServer) LoginCheck(ctx context.Context, user *usermodel.UserModel)
 	var u usermodel.UserModel
 
 	//take user with given credintials
-	if err = us.db.Model(&usermodel.UserModel{}).Where("username = ?", user.Username).Take(&u).Error; err != nil {
+	if err = us.db.Model(&usermodel.UserModel{}).Where("userـname = ?", user.UserName).Take(&u).Error; err != nil {
 		return
 	}
 
@@ -42,7 +43,13 @@ func (us *UserServer) LoginCheck(ctx context.Context, user *usermodel.UserModel)
 		return
 	}
 
-	return "", nil
+	token, err = auth.GenerateToken(u.ID)
+
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
 }
 
 func GetUserByID(uid int64, db *gorm.DB) (*usermodel.UserModel, error) {

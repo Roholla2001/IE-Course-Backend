@@ -1,14 +1,17 @@
 package user
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
+)
 
 type UserModel struct {
 	ID       int64 `gorm:"primaryKey"`
-	Username string
+	UserName string
 	Password string
 }
 
-func (u *UserModel) BeforeSave() error {
+func (u *UserModel) BeforeSave(db *gorm.DB) error {
 
 	//turn password into hash
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)

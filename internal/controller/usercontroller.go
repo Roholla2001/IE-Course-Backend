@@ -32,7 +32,7 @@ func (uc *UserController) Register(ctx *gin.Context) {
 
 	u := &usermodel.UserModel{}
 
-	u.Username = input.Username
+	u.UserName = input.Username
 	u.Password = input.Password
 
 	err := uc.UserServer.CreateUser(ctx, u)
@@ -54,7 +54,7 @@ func (uc *UserController) Login(ctx *gin.Context) {
 
 	u := &usermodel.UserModel{}
 
-	u.Username = input.Username
+	u.UserName = input.Username
 	u.Password = input.Password
 
 	token, err := uc.UserServer.LoginCheck(ctx, u)

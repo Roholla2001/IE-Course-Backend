@@ -37,7 +37,7 @@ func (s *Server) AddURL(ctx context.Context, url *urlmodel.URLModel) error {
 func (s *Server) GetURLs() ([]*urlmodel.URLModel, error) {
 	urls := make([]*urlmodel.URLModel, 0)
 
-	err := s.DB.Model(&urlmodel.URLModel{}).Find(urls).Error
+	err := s.DB.Model(&urlmodel.URLModel{}).Find(&urls).Error
 	if err != nil {
 		return nil, err
 	}

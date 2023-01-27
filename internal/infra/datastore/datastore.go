@@ -8,6 +8,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 )
 
 type dbConfig struct {
@@ -48,6 +49,9 @@ func NewDBConn() (db *gorm.DB, err error) {
 	//Get a new Connection Pool from postgres driver
 	db, err = gorm.Open(postgres.Open(connStr), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.LogLevel(cfg.LogLevel)),
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
+		},
 	})
 
 	if err != nil {
@@ -116,6 +120,6 @@ func (cfg dbConfig) toConnStr() string {
 	return connString
 }
 
-func GetDBConn() *gorm.DB{
+func GetDBConn() *gorm.DB {
 	return dbSaved
 }
