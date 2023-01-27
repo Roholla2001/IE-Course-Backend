@@ -56,7 +56,7 @@ func (us *URLServer) GetStats(ctx context.Context, id int64, currUser *usermodel
 	}
 
 	URLStat := new(urlmodel.URLStat)
-	if err := us.db.Model(&urlmodel.URLModel{}).Select("success_count", "fail_count").Take(URLStat).Error; err != nil {
+	if err := us.db.Model(&urlmodel.URLModel{}).Select("success_count", "fail_count").Where("id = ?", url.ID).Take(URLStat).Error; err != nil {
 		return nil, err
 	}
 
@@ -66,7 +66,7 @@ func (us *URLServer) GetStats(ctx context.Context, id int64, currUser *usermodel
 func (us *URLServer) GetRoute(id int64) (string, error) {
 	var url string
 
-	if err := us.db.Model(&urlmodel.URLModel{}).Select("url").Take(&url).Error; err != nil {
+	if err := us.db.Model(&urlmodel.URLModel{}).Where("id = ?", id).Select("url").Take(&url).Error; err != nil {
 		return "", err
 	}
 
