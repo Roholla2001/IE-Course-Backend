@@ -1,10 +1,7 @@
 package controller
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -13,10 +10,6 @@ type AppController struct {
 	ServerController *ServerController
 	UserController   *UserController
 	URLController    []*URLController
-}
-
-type testUrl struct {
-	Url string `json:"url"`
 }
 
 func (ac *AppController) AddRoutes(parent *gin.RouterGroup) {
@@ -28,31 +21,6 @@ func (ac *AppController) AddRoutes(parent *gin.RouterGroup) {
 	for _, c := range ac.URLController {
 		c.addRoutes(route)
 	}
-
-	route.POST("/add-route", func(ctx *gin.Context) {
-		// c := ctx.Request.Context()
-
-		req, err := io.ReadAll(ctx.Request.Body)
-		if err != nil {
-			ctx.Error(err)
-		}
-
-		test := new(testUrl)
-		err = json.Unmarshal(req, test)
-		if err != nil {
-			ctx.Error(err)
-		}
-
-		route.GET("/"+test.Url, func(ctx *gin.Context) {
-			ctx.IndentedJSON(http.StatusOK, gin.H{"message": "url works!"})
-		})
-
-		if err != nil {
-			ctx.Error(err)
-		}
-
-		ctx.IndentedJSON(http.StatusOK, gin.H{"message": "url added", "url": test.Url})
-	})
 }
 
 func (ac *AppController) NewServerController(db *gorm.DB) (*ServerController, error) {
