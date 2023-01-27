@@ -16,10 +16,10 @@ func NewServer(db *gorm.DB) (*Server, error) {
 	return &Server{db}, nil
 }
 
-func (s *Server) AddURL(ctx context.Context, url *urlmodel.URL) error {
+func (s *Server) AddURL(ctx context.Context, url *urlmodel.URLModel) error {
 
 	var URLcount int64
-	if err := s.DB.Model(&urlmodel.URL{}).Select("COUNT(*)").Where("user_id = ?", url.UserID).Take(&URLcount).Error; err != nil {
+	if err := s.DB.Model(&urlmodel.URLModel{}).Select("COUNT(*)").Where("user_id = ?", url.UserID).Take(&URLcount).Error; err != nil {
 		return err
 	}
 
@@ -34,10 +34,10 @@ func (s *Server) AddURL(ctx context.Context, url *urlmodel.URL) error {
 	return nil
 }
 
-func (s *Server) GetURLs() ([]*urlmodel.URL, error) {
-	urls := make([]*urlmodel.URL, 0)
+func (s *Server) GetURLs() ([]*urlmodel.URLModel, error) {
+	urls := make([]*urlmodel.URLModel, 0)
 
-	err := s.DB.Model(&urlmodel.URL{}).Find(urls).Error
+	err := s.DB.Model(&urlmodel.URLModel{}).Find(urls).Error
 	if err != nil {
 		return nil, err
 	}

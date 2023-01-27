@@ -15,7 +15,7 @@ type URLController struct {
 	URLServer *urlservice.URLServer
 }
 
-func NewURLController(db *gorm.DB, url *urlmodel.URL) (*URLController, error) {
+func NewURLController(db *gorm.DB, url *urlmodel.URLModel) (*URLController, error) {
 	us, err := urlservice.NewURLService(db)
 	if err != nil {
 		return nil, err

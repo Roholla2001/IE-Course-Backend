@@ -20,15 +20,15 @@ func NewURLService(db *gorm.DB) (*URLServer, error) {
 
 func (us *URLServer) LogRequest(ctx context.Context, id int64, currUser *usermodel.UserModel) error {
 
-	var url *urlmodel.URL
+	var url *urlmodel.URLModel
 
-	if err := us.db.Model(&urlmodel.URL{}).Take(url, id).Error; err != nil {
+	if err := us.db.Model(&urlmodel.URLModel{}).Take(url, id).Error; err != nil {
 		return err
 	}
 
 	if url.UserID != currUser.ID {
 		url.FailCount = url.FailCount + 1
-		if err := us.db.Model(&urlmodel.URL{}).Save(url).Error; err != nil {
+		if err := us.db.Model(&urlmodel.URLModel{}).Save(url).Error; err != nil {
 			return err
 		}
 
@@ -36,7 +36,7 @@ func (us *URLServer) LogRequest(ctx context.Context, id int64, currUser *usermod
 	}
 
 	url.SuccessCount = url.SuccessCount + 1
-	if err := us.db.Model(&urlmodel.URL{}).Save(url).Error; err != nil {
+	if err := us.db.Model(&urlmodel.URLModel{}).Save(url).Error; err != nil {
 		return err
 	}
 
@@ -45,9 +45,9 @@ func (us *URLServer) LogRequest(ctx context.Context, id int64, currUser *usermod
 
 func (us *URLServer) GetStats(ctx context.Context, id int64, currUser *usermodel.UserModel) (*urlmodel.URLStat, error) {
 
-	var url *urlmodel.URL
+	var url *urlmodel.URLModel
 
-	if err := us.db.Model(&urlmodel.URL{}).Take(url, id).Error; err != nil {
+	if err := us.db.Model(&urlmodel.URLModel{}).Take(url, id).Error; err != nil {
 		return nil, err
 	}
 
@@ -56,7 +56,7 @@ func (us *URLServer) GetStats(ctx context.Context, id int64, currUser *usermodel
 	}
 
 	var URLStat *urlmodel.URLStat
-	if err := us.db.Model(&urlmodel.URL{}).Select("success_count", "fail_count").Take(URLStat).Error; err != nil {
+	if err := us.db.Model(&urlmodel.URLModel{}).Select("success_count", "fail_count").Take(URLStat).Error; err != nil {
 		return nil, err
 	}
 
@@ -66,7 +66,7 @@ func (us *URLServer) GetStats(ctx context.Context, id int64, currUser *usermodel
 func (us *URLServer) GetRoute(id int64) (string, error) {
 	var url *string
 
-	if err := us.db.Model(&urlmodel.URL{}).Select("url").Take(url).Error; err != nil {
+	if err := us.db.Model(&urlmodel.URLModel{}).Select("url").Take(url).Error; err != nil {
 		return "", err
 	}
 

@@ -26,7 +26,7 @@ func NewServerController(db *gorm.DB) (*ServerController, error) {
 func (sc *ServerController) AddUrl(ctx *gin.Context) {
 	c := ctx.Request.Context()
 
-	url := new(urlmodel.URL)
+	url := new(urlmodel.URLModel)
 	if ok := apiutils.ReadFromJSON(ctx, url); !ok {
 		return
 	}
@@ -40,14 +40,14 @@ func (sc *ServerController) AddUrl(ctx *gin.Context) {
 	uc, err := NewURLController(sc.server.DB, url)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return 
+		return
 	}
 	sc.parentRoute.GET("/"+url.URL, uc.Log)
-	sc.parentRoute.GET("/"+url.URL + "/stats", uc.GetStats)
+	sc.parentRoute.GET("/"+url.URL+"/stats", uc.GetStats)
 
 }
 
-func (sc *ServerController) getURLs() ([]*urlmodel.URL, error) {
+func (sc *ServerController) getURLs() ([]*urlmodel.URLModel, error) {
 	return sc.server.GetURLs()
 }
 

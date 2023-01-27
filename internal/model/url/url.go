@@ -1,6 +1,6 @@
 package urlmodel
 
-type URL struct {
+type URLModel struct {
 	ID           int64  `gorm:"primaryKey" json:"id"`
 	URL          string `json:"url"`
 	UserID       int64  `json:"user_id"`
