@@ -19,10 +19,7 @@ func NewURLService(db *gorm.DB) (*URLServer, error) {
 }
 
 func (us *URLServer) LogRequest(ctx context.Context, id int64, currUser *usermodel.User) error {
-	// var URLcount int64
-	// if err:= us.db.Model(&urlmodel.URL{}).Select("COUNT(*)").Where("user_id = ?", currUser).Take(&URLcount).Error ;err != nil {
-	// 	return err
-	// }
+	
 	var url *urlmodel.URL
 
 	if err := us.db.Model(&urlmodel.URL{}).Take(url, id).Error; err != nil {
