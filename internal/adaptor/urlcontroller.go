@@ -1,11 +1,13 @@
 package adaptor
 
 import (
-	"github.com/Roholla2001/ie-course-backend/internal/model"
+	urlmodel "github.com/Roholla2001/ie-course-backend/internal/model/url"
 	"gorm.io/gorm"
 )
 
 type URLController struct {
 }
 
-func NewURLController(db *gorm.DB, url *model.URL) (*URLController, error)
+func NewURLController(db *gorm.DB, url *urlmodel.URL) (*URLController, error) {
+	return &URLController{}, nil
+}
