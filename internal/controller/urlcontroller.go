@@ -17,14 +17,22 @@ func (c *URLController) Log(ctx *gin.Context) {
 
 }
 
-func (c *URLController) GetStats(ctx *gin.Context){
+func (c *URLController) GetStats(ctx *gin.Context) {
 
 }
 
-func (c *URLController) GetRoute() string{
+func (c *URLController) getRoute() string {
 	return ""
 }
 
-func AddRoutes(parent gin.RouterGroup) {
+func (c *URLController) addRoutes(parent *gin.RouterGroup) {
+	//url endpoints
+	ep := parent.Group("/link")
 
+	url := c.getRoute()
+	ep.Use()
+	{
+		ep.GET("/"+url, c.Log)
+		ep.GET("/"+url+"/stats", c.GetStats)
+	}
 }

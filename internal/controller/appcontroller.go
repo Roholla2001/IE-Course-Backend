@@ -22,6 +22,13 @@ type testUrl struct {
 func (ac *AppController) AddRoutes(parent *gin.RouterGroup) {
 	route := parent.Group("/api")
 
+	ac.ServerController.addRoutes(route)
+	ac.UserController.addRoutes(route)
+
+	for _, c := range ac.URLController {
+		c.addRoutes(route)
+	}
+
 	route.POST("/add-route", func(ctx *gin.Context) {
 		// c := ctx.Request.Context()
 
@@ -61,7 +68,7 @@ func (ac *AppController) NewURLController(db *gorm.DB) ([]*URLController, error)
 		return nil, fmt.Errorf("can not initiate url controller without a server")
 	}
 
-	urls, err := ac.ServerController.GetURLs()
+	urls, err := ac.ServerController.getURLs()
 	if err != nil {
 		return nil, err
 	}

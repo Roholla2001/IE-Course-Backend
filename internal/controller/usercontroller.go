@@ -12,10 +12,14 @@ func NewUserController(db *gorm.DB) (*UserController,error){
 	return &UserController{}, nil
 }
 
-func Register(ctx *gin.Context){
+func (uc *UserController) Register(ctx *gin.Context){
 
 }
 
-func Login(ctx *gin.Context){
+func (uc *UserController) Login(ctx *gin.Context){
+
+}
+
+func (uc *UserController) addRoutes(parent *gin.RouterGroup){
 	
 }
