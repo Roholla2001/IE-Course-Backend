@@ -34,6 +34,7 @@ func (cc *URLController) Log(ctx *gin.Context) {
 
 	err = cc.URLServer.LogRequest(c, cc.URLID, currUser)
 	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -51,6 +52,7 @@ func (cc *URLController) GetStats(ctx *gin.Context) {
 
 	stat, err := cc.URLServer.GetStats(c, cc.URLID, currUser)
 	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

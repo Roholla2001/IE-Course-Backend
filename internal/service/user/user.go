@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 
 	usermodel "github.com/Roholla2001/ie-course-backend/internal/model/user"
 	auth "github.com/Roholla2001/ie-course-backend/internal/utils/token"
@@ -31,7 +30,7 @@ func (us *UserServer) LoginCheck(ctx context.Context, user *usermodel.UserModel)
 	var u usermodel.UserModel
 
 	//take user with given credintials
-	if err = us.db.Model(&usermodel.UserModel{}).Where("userـname = ?", user.UserName).Take(&u).Error; err != nil {
+	if err = us.db.Model(&usermodel.UserModel{}).Where("user_name = ?", user.UserName).Take(&u).Error; err != nil {
 		return
 	}
 
@@ -53,10 +52,10 @@ func (us *UserServer) LoginCheck(ctx context.Context, user *usermodel.UserModel)
 }
 
 func GetUserByID(uid int64, db *gorm.DB) (*usermodel.UserModel, error) {
-	var u *usermodel.UserModel
+	u := new(usermodel.UserModel)
 
-	if err := db.First(u, uid).Error; err != nil {
-		return u, fmt.Errorf("user not found")
+	if err := db.Model(&usermodel.UserModel{}).First(u, uid).Error; err != nil {
+		return nil, err
 	}
 
 	u.Password = ""

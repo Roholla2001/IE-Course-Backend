@@ -31,7 +31,15 @@ func (sc *ServerController) AddUrl(ctx *gin.Context) {
 		return
 	}
 
-	err := sc.server.AddURL(c, url)
+	currUser, err := CurrentUser(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	url.UserID = currUser.ID
+
+	err = sc.server.AddURL(c, url)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -44,6 +52,8 @@ func (sc *ServerController) AddUrl(ctx *gin.Context) {
 	}
 	sc.parentRoute.GET("/"+url.URL, uc.Log)
 	sc.parentRoute.GET("/"+url.URL+"/stats", uc.GetStats)
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "url added successfully"})
 
 }
 

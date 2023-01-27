@@ -24,9 +24,9 @@ func NewUserController(db *gorm.DB) (*UserController, error) {
 
 func (uc *UserController) Register(ctx *gin.Context) {
 
-	var input RegisterInput
+	input := new(RegisterInput)
 
-	if ok := apiutils.ReadFromJSON(ctx, input); ok {
+	if ok := apiutils.ReadFromJSON(ctx, input); !ok {
 		return
 	}
 
@@ -46,9 +46,10 @@ func (uc *UserController) Register(ctx *gin.Context) {
 }
 
 func (uc *UserController) Login(ctx *gin.Context) {
-	var input LoginInput
+	input := new(LoginInput)
 
-	if ok := apiutils.ReadFromJSON(ctx, input); ok {
+	if ok := apiutils.ReadFromJSON(ctx, input); !ok {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": ctx.Errors})
 		return
 	}
 

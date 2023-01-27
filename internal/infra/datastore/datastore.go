@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -50,7 +51,8 @@ func NewDBConn() (db *gorm.DB, err error) {
 	db, err = gorm.Open(postgres.Open(connStr), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.LogLevel(cfg.LogLevel)),
 		NamingStrategy: schema.NamingStrategy{
-			SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
+			SingularTable: true,                              // use singular table name, table for `User` would be `user` with this option enabled
+			NameReplacer:  strings.NewReplacer("CID", "cid"), // use name replacer to change struct/field name before convert it to db name
 		},
 	})
 
