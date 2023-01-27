@@ -59,12 +59,12 @@ func (cc *URLController) GetStats(ctx *gin.Context) {
 		return
 	}
 
-	err = cc.URLServer.LogRequest(c, currUser)
+	stat ,err := cc.URLServer.GetStats(c, currUser)
 	if err != nil {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{})
+	apiutils.WriteToJSON(ctx, stat, err)
 }
 
 func (cc *URLController) getRoute() string {
