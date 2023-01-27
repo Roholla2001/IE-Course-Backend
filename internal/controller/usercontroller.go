@@ -68,5 +68,6 @@ func (uc *UserController) Login(ctx *gin.Context) {
 }
 
 func (uc *UserController) addRoutes(parent *gin.RouterGroup) {
-
+	parent.POST("/register", uc.Register)
+	parent.POST("/login", uc.Login)
 }
