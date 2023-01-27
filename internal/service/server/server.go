@@ -27,7 +27,7 @@ func (s *Server) AddURL(ctx context.Context, url *urlmodel.URL) error {
 		return fmt.Errorf("url count limit exeeded")
 	}
 
-	if err := s.db.Create(url).Error; err != nil {
+	if err := s.DB.Create(url).Error; err != nil {
 		return err
 	}
 
