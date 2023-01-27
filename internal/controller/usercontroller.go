@@ -1,4 +1,4 @@
-package adaptor
+package controller
 
 import "gorm.io/gorm"
 

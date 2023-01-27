@@ -1,4 +1,4 @@
-package adaptor
+package controller
 
 import (
 	urlmodel "github.com/Roholla2001/ie-course-backend/internal/model/url"

@@ -1,4 +1,4 @@
-package adaptor
+package controller
 
 import (
 	urlmodel "github.com/Roholla2001/ie-course-backend/internal/model/url"
@@ -14,5 +14,17 @@ func NewURLController(db *gorm.DB, url *urlmodel.URL) (*URLController, error) {
 }
 
 func (c *URLController) Log(ctx *gin.Context) {
-	
+
+}
+
+func (c *URLController) GetStats(ctx *gin.Context){
+
+}
+
+func (c *URLController) GetRoute() string{
+	return ""
+}
+
+func AddRoutes(parent gin.RouterGroup) {
+
 }
