@@ -1,3 +1,3 @@
-package model
+package urlmodel
 
 type URL struct{}
